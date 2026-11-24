@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إدارة VEXO STORE</title><link rel="stylesheet" href="style.css"></head>
+<body class="admin-body">
+<header class="topbar"><a class="brand" href="./">VEXO <span>STORE</span></a><a href="./">عرض المتجر</a></header>
+<main class="admin-wrap">
+  <section id="login-panel" class="panel login-panel"><p class="eyebrow">SECURE ACCESS</p><h1>لوحة الإدارة</h1><p class="muted">أدخل كلمة مرور الإدارة للمتابعة.</p>
+    <form id="login-form"><label>كلمة المرور<input id="password" type="password" autocomplete="current-password" required></label><button class="btn gold" type="submit">دخول</button><p id="login-error" class="error"></p></form>
+  </section>
+  <section id="dashboard" class="hidden">
+    <div class="section-head"><div><p class="eyebrow">CONTROL PANEL</p><h1>إدارة المنتجات</h1></div><button id="logout" class="btn outline">تسجيل الخروج</button></div>
+    <div class="admin-grid">
+      <section class="panel"><h2 id="form-title">إضافة منتج</h2>
+        <form id="product-form">
+          <input id="product-id" type="hidden">
+          <label>اسم المنتج<input id="product-name" maxlength="100" required placeholder="مثال: ساعة VEXO"></label>
+          <label>السعر بالدينار التونسي<input id="product-price" type="number" min="0" step="0.001" required placeholder="مثال: 59.900"></label>
+          <label>وصف المنتج<textarea id="product-description" maxlength="1200" rows="5" required placeholder="اكتب وصفاً واضحاً للمنتج"></textarea></label>
+          <label>صورة المنتج<input id="product-image" type="file" accept="image/jpeg,image/png,image/webp"></label>
+          <p class="hint">الصيغ المقبولة: JPG وPNG وWEBP. الحد الأقصى 5MB.</p>
+          <img id="image-preview" class="preview hidden" alt="معاينة الصورة">
+          <div class="actions"><button class="btn gold" type="submit" id="save-btn">حفظ المنتج</button><button class="btn outline" type="button" id="cancel-edit">إلغاء</button></div>
+          <p id="form-message" class="message"></p>
+        </form>
+      </section>
+      <section class="panel"><div class="section-head"><h2>المنتجات الحالية</h2><button id="refresh" class="btn outline small">تحديث</button></div><div id="admin-products" class="admin-products"><p class="muted">سجّل الدخول لعرض المنتجات.</p></div></section>
+    </div>
+    <section class="panel orders-panel"><div class="section-head"><h2>الطلبات الواردة</h2><button id="refresh-orders" class="btn outline small">تحديث الطلبات</button></div><div id="admin-orders"><p class="muted">جارٍ تحميل الطلبات...</p></div></section>
+  </section>
+</main>
+<script>window.VEXO_CONFIG={apiBase:"https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev"};</script>
+<script src="admin.js"></script>
+</body></html>
