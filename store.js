@@ -2,13 +2,19 @@
 const API = window.VEXO_CONFIG.apiBase.replace(/\/+$/, "");
 const grid = document.getElementById("products-grid");
 
-const money = n =>
-  new Intl.NumberFormat("ar-TN", {
-    style: "currency",
-    currency: "TND",
-    minimumFractionDigits: 3
-  }).format(Number(n));
+// تنسيق الأسعار دون أصفار زائدة
+const money = n => {
+  const value = Number(n);
 
+  if (!Number.isFinite(value)) return "0 دينار";
+
+  return new Intl.NumberFormat("ar-TN", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3
+  }).format(value) + " دينار";
+};
+
+// حماية النصوص
 const safe = s =>
   String(s ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;",
@@ -18,7 +24,7 @@ const safe = s =>
     "'": "&#39;"
   }[c]));
 
-// رابط الصورة من Worker
+// رابط صورة المنتج
 function getImageUrl(product) {
   if (product.imageKey) {
     return API + "/images/" + encodeURIComponent(product.imageKey);
@@ -31,7 +37,7 @@ function getImageUrl(product) {
   return "";
 }
 
-// إظهار المنتجات
+// تحميل المنتجات
 async function loadProducts() {
   try {
     const response = await fetch(API + "/api/products");
@@ -53,6 +59,7 @@ async function loadProducts() {
 
     grid.innerHTML = products.map(p => {
       const image = safe(getImageUrl(p));
+      const description = String(p.description || "");
 
       return `
         <article class="product-card">
@@ -67,8 +74,8 @@ async function loadProducts() {
             <h3>${safe(p.name)}</h3>
 
             <p>
-              ${safe(p.description).slice(0, 95)}
-              ${String(p.description || "").length > 95 ? "…" : ""}
+              ${safe(description).slice(0, 95)}
+              ${description.length > 95 ? "…" : ""}
             </p>
 
             <strong class="price">${money(p.price)}</strong>
@@ -99,7 +106,7 @@ async function loadProducts() {
 
 let activeProduct = null;
 
-// عرض تفاصيل المنتج والصورة
+// تفاصيل المنتج
 function showProduct(product) {
   if (!product) return;
 
